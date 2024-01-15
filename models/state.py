@@ -4,6 +4,8 @@ from models.base_model import BaseModel, Base
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, String
+from models import storage
+
 
 class State(BaseModel):
     """ State class """
@@ -14,9 +16,9 @@ class State(BaseModel):
 
     @property
     def cities(self):
-    """Getter attribute"""
+        """Getter attribute"""
         ct_list = []
-        for city in engine.file_storage.all("City").values():
+        for city in storage.all("City").values():
             if city.state_id == self.id:
                 ct_list.append(city)
         return ct_list
