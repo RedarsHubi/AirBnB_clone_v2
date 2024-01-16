@@ -44,7 +44,8 @@ class DBStorage:
             query_obj = [cls]
 
         for typ in query_obj:
-            objects = self.__session.query(typ).all()
+            table = typ.__table__
+            objects = self.__session.query(table).all()
             for obj in objects:
                 key = "{}.{}".format(typ.__name__, obj.id)
                 obj_dic[key] = obj
