@@ -4,7 +4,7 @@ from os import getenv
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import (create_engine)
 from sqlalchemy.ext.declarative import declarative_base
-
+from models.base_model import Base
 from models.base_model import BaseModel
 from models.user import User
 from models.place import Place
@@ -12,8 +12,6 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-
-Base = declarative_base()
 
 
 class DBStorage:
@@ -38,18 +36,20 @@ class DBStorage:
     def all(self, cls=None):
         """returns a dictionary"""
         obj_dic = {}
-        query_obj = [State, City]
-
-        if cls is not None:
-            query_obj = [cls]
-
-        for typ in query_obj:
-            table = typ.__table__
-            objects = self.__session.query(table).all()
-            for obj in objects:
-                key = "{}.{}".format(typ.__name__, obj.id)
-                obj_dic[key] = obj
-
+        if cls:
+            if type(cls) is str:
+                cls = eval(cls)
+            query = self.__session.query(cls)
+            for elem in query:
+                key = "{}.{}".format(type(elem).__name__, elem.id)
+                obj_dic[key] = elem
+        else:
+            objs = [State, City]
+            for c in objs:
+                query = self.__session.query(c)
+                for elem in query:
+                    key = "{}.{}".format(type(elem).__name__, elem.id)
+                    obj_dic[key] = elem
         return obj_dic
 
     def new(self, obj):
@@ -66,7 +66,7 @@ class DBStorage:
         """delete element
         """
         if obj:
-            self.session.delete(obj)
+            self.__session.delete(obj)
 
     def reload(self):
         """configuration
