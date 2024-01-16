@@ -38,7 +38,6 @@ class FileStorage:
 
     def reload(self):
         """Loads storage dictionary from file"""
-        from models.base_model import BaseModel
         from models.user import User
         from models.place import Place
         from models.state import State
@@ -63,6 +62,5 @@ class FileStorage:
     def delete(self, obj=None):
         if obj:
             key = "{}.{}".format(type(obj).__name__, obj.id)
-            print("Deleting key:", key)
             self.__objects.pop(key, None)
             self.save()
