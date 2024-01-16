@@ -14,7 +14,8 @@ class FileStorage:
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
-        FileStorage.__objects.update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
+        FileStorage.__objects.update({obj.to_dict()['__class__'] \
+        + '.' + str(obj.id): obj})
 
     def save(self):
         """Saves storage dictionary to file"""
@@ -54,5 +55,6 @@ class FileStorage:
             try:
                 key = obj.__class__.__name__ + "." + obj.id
                 del FileStorage.__objects[key]
+                self.save()
             except KeyError:
                 print("** no instance found **")

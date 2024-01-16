@@ -139,7 +139,7 @@ class HBNBCommand(cmd.Cmd):
             except ValueError:
                 pass
         new_instance = HBNBCommand.classes[arg[0]](**kwargs)
-        storage.save()
+        new_instance.save()
         print(new_instance.id)
 
     def help_create(self):
@@ -169,9 +169,10 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
             return
 
-        key = c_name + "." + c_id
+        key = c_name + "." + str(c_id)
+        print("Key:", key)
         try:
-            print(storage._FileStorage__objects[key])
+            print(storage.all()[key])
         except KeyError:
             print("** no instance found **")
 
