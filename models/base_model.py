@@ -46,7 +46,9 @@ class BaseModel:
         return "[{}] ({}) {}".format(
             cls,
             self.id,
-            {key: val for key, val in self.__dict__.items() if not key.startswith('_sa_instance_state')}
+            {key: val for key, val in self.__dict__.items()
+             if not key.startswith('_sa_instance_state')
+             }
         )
 
     def save(self):
