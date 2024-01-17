@@ -3,14 +3,12 @@
 import models
 from os import getenv
 from models.base_model import BaseModel, Base
-from models.amenity import Amenity
 from models.review import Review
-
-from sqlalchemy import Column, String, Integer, Float, ForeignKey
-from sqlalchemy import Table
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, String, Integer, Float, Table, ForeignKey
 from sqlalchemy.orm import relationship
 
-association_table = Table("place_amenity", Base.metadata,
+place_amenity = Table("place_amenity", Base.metadata,
                           Column("place_id", String(60),
                                  ForeignKey("places.id"),
                                  primary_key=True, nullable=False),
@@ -38,8 +36,8 @@ class Place(BaseModel, Base):
 
     if getenv("HBNB_TYPE_STORAGE", None) == "db":
         reviews = relationship("Review", backref="place", cascade="delete")
-        amenities = relationship("Amenity", secondary="place_amenity",
-                             viewonly=False)
+        amenities = relationship("Amenity", secondary=place_amenity,
+                             viewonly=False, back_populates="place_amenities")
     else:
         @property
         def reviews(self):
@@ -52,14 +50,11 @@ class Place(BaseModel, Base):
 
         @property
         def amenities(self):
-            """Get a list of Reviews linked to Place"""
-            amenities_list = []
-            for amenity in list(models.storage.all(Amenity).values()):
-                if amenity.id in self.amenity_ids:
-                    amenities_list.append(amenity)
-            return amenities_list
+            """ Returns list of amenity ids """
+            return self.amenity_ids
 
         @amenities.setter
-        def amenities(self, value):
-            if type(value) == Amenity:
-                self.amenity_ids.append(value.id)
+        def amenities(self, obj=None):
+            """ Appends amenity ids to the attribute """
+            if type(obj) is Amenity and obj.id not in self.amenity_ids:
+                self.amenity_ids.append(obj.id)
