@@ -21,7 +21,8 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
 
-    city = relationship('City', back_populates='places')
-    user = relationship('User', back_populates='places')
+    reviews = relationship("Review", backref="place", cascade="delete")
+    amenities = relationship("Amenity", secondary="place_amenity",
+                             viewonly=False)
 
     amenity_ids = []
