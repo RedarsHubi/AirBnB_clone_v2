@@ -7,6 +7,7 @@ import os
 env.hosts = ["100.25.171.37", "3.85.175.199"]
 env.user = "ubuntu"
 
+
 def do_pack():
     """Compressing files"""
     try:
@@ -19,6 +20,7 @@ def do_pack():
         return path
     except Exception as e:
         return None
+
 
 def do_deploy(archive_path):
     """Deploying files"""
