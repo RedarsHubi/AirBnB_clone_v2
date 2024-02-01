@@ -50,5 +50,4 @@ def deploy():
     creat_arch = do_pack()
     if creat_arch is None:
         return False
-    dep = do_deploy(creat_arch)
-    return dep
+    return do_deploy(creat_arch)
