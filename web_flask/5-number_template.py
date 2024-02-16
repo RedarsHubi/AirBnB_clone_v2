@@ -36,6 +36,7 @@ def numba(n):
     """ Function called with /number/<n> route """
     return '%i is a number' % n
 
+
 @app.route('/number_template/<int:n>', strict_slashes=False)
 def numb_temp(n):
     """ Function called with /number_template/<n> route """
