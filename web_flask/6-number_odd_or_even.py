@@ -42,6 +42,7 @@ def numb_temp(n):
     """ Function called with /number_template/<n> route """
     return render_template("5-number.html", number=n)
 
+
 @app.route('/number_odd_or_even/<int:n>', strict_slashes=False)
 def numb_o_e(n):
     """ Function called with /number_odd_or_even/<n> route """
