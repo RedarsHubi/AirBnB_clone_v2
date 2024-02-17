@@ -64,3 +64,7 @@ class FileStorage:
             key = "{}.{}".format(type(obj).__name__, obj.id)
             self.__objects.pop(key, None)
             self.save()
+
+    def close(self):
+        "Calls reload"
+        self.reload()
